@@ -1,0 +1,22 @@
+# Исключаем зависимости и мусор
+node_modules
+vendor
+.git
+.github
+.idea
+.vscode
+
+# Исключаем файлы конфигурации окружения (они должны создаваться на сервере отдельно)
+.env
+.env.*
+!.env.example
+
+# Исключаем логи, кэш и временные хранилища
+storage/*.key
+storage/logs/*.log
+bootstrap/cache/*.php
+
+# Исключаем файлы докера и документацию из контекста сборки внутри контейнеров
+Deploy/
+docker-compose*.yml
+README.md

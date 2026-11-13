@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend-prod:
+    build:
+      context: ./laravel
+      dockerfile: ../Deploy/prod/Dockerfile.php
+    container_name: backend-prod
+    restart: always
+    networks:
+      - app-net
+
+  nginx-prod:
+    build:
+      context: ./laravel
+      dockerfile: ../Deploy/prod/Dockerfile.nginx
+    container_name: nginx-prod
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-net
+
+  postgres-prod:
+    image: postgres:16-alpine
+    container_name: postgres-prod
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata-prod:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  pgadmin-prod:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin-prod
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "127.0.0.1:5050:80"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  pgdata-prod:
