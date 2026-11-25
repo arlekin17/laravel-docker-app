@@ -1,6 +1,3 @@
-# Laravel Multi-Service Docker Deployment
-
-Production and development deployment setup for a Laravel application with isolated service builds, multi-stage Dockerfiles, cache cleanup, and vulnerability scanning via Trivy.
 
 ## Project Structure
 
