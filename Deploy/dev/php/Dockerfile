@@ -1,4 +1,4 @@
-FROM php:8.5-fpm-alpine
+FROM php:8.5.0-fpm-alpine3.21
 
 RUN apk add --no-cache \
     libpng-dev \

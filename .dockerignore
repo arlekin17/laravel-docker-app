@@ -1,22 +1,30 @@
-# Исключаем зависимости и мусор
-node_modules
-vendor
 .git
-.github
-.idea
-.vscode
+.gitignore
+.dockerignore
+README.md
+check-multistage.sh
+deploy.sh
+docker-compose*.yml
+Deploy/
 
-# Исключаем файлы конфигурации окружения (они должны создаваться на сервере отдельно)
 .env
 .env.*
 !.env.example
 
-# Исключаем логи, кэш и временные хранилища
-storage/*.key
-storage/logs/*.log
-bootstrap/cache/*.php
-
-# Исключаем файлы докера и документацию из контекста сборки внутри контейнеров
-Deploy/
-docker-compose*.yml
-README.md
+laravel/.env
+laravel/.env.*
+!laravel/.env.example
+laravel/node_modules
+laravel/vendor
+laravel/public/build
+laravel/public/hot
+laravel/public/storage
+laravel/storage/*.key
+laravel/storage/logs/*
+laravel/storage/framework/cache/data/*
+laravel/storage/framework/sessions/*
+laravel/storage/framework/views/*
+laravel/bootstrap/cache/*
+!laravel/bootstrap/cache/.gitignore
+laravel/tests
+laravel/.phpunit.result.cache

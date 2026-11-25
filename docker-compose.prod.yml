@@ -1,10 +1,9 @@
-version: '3.8'
-
 services:
   backend-prod:
     build:
-      context: ./laravel
-      dockerfile: ../Deploy/prod/Dockerfile.php
+      context: .
+      dockerfile: Deploy/prod/php/Dockerfile
+    image: app-php:prod
     container_name: backend-prod
     restart: always
     networks:
@@ -12,18 +11,26 @@ services:
 
   nginx-prod:
     build:
-      context: ./laravel
-      dockerfile: ../Deploy/prod/Dockerfile.nginx
+      context: ./Deploy/prod/nginx
+      dockerfile: Dockerfile
+    image: app-nginx:prod
     container_name: nginx-prod
     restart: always
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./laravel/public:/var/www/html/public:ro
+    depends_on:
+      - backend-prod
     networks:
       - app-net
 
   postgres-prod:
-    image: postgres:16-alpine
+    build:
+      context: ./Deploy/prod/postgres
+      dockerfile: Dockerfile
+    image: app-postgres:prod
     container_name: postgres-prod
     restart: always
     environment:
@@ -36,7 +43,10 @@ services:
       - app-net
 
   pgadmin-prod:
-    image: dpage/pgadmin4:latest
+    build:
+      context: ./Deploy/prod/pgadmin
+      dockerfile: Dockerfile
+    image: app-pgadmin:prod
     container_name: pgadmin-prod
     restart: always
     environment:
@@ -44,6 +54,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "127.0.0.1:5050:80"
+    depends_on:
+      - postgres-prod
     networks:
       - app-net
 

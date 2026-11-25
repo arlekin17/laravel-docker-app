@@ -1,10 +1,10 @@
-version: '3.8'
 
 services:
   backend-dev:
     build:
-      context: ./laravel
-      dockerfile: ../Deploy/dev/Dockerfile.php
+      context: ./Deploy/dev/php
+      dockerfile: Dockerfile
+    image: app-php:dev
     container_name: backend-dev
     restart: unless-stopped
     working_dir: /var/www/html
@@ -15,8 +15,9 @@ services:
 
   frontend-dev:
     build:
-      context: ./laravel
-      dockerfile: ../Deploy/dev/Dockerfile.node
+      context: ./Deploy/dev/node
+      dockerfile: Dockerfile
+    image: app-node:dev
     container_name: frontend-dev
     restart: unless-stopped
     working_dir: /app
@@ -28,19 +29,25 @@ services:
 
   nginx-dev:
     build:
-      context: ./laravel
-      dockerfile: ../Deploy/dev/Dockerfile.nginx
+      context: ./Deploy/dev/nginx
+      dockerfile: Dockerfile
+    image: app-nginx:dev
     container_name: nginx-dev
     restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
       - ./laravel:/var/www/html
+    depends_on:
+      - backend-dev
     networks:
       - app-net
 
   postgres-dev:
-    image: postgres:16-alpine
+    build:
+      context: ./Deploy/dev/postgres
+      dockerfile: Dockerfile
+    image: app-postgres:dev
     container_name: postgres-dev
     restart: unless-stopped
     environment:
@@ -55,7 +62,10 @@ services:
       - app-net
 
   pgadmin-dev:
-    image: dpage/pgadmin4:latest
+    build:
+      context: ./Deploy/dev/pgadmin
+      dockerfile: Dockerfile
+    image: app-pgadmin:dev
     container_name: pgadmin-dev
     restart: unless-stopped
     environment:
@@ -63,6 +73,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin_password
     ports:
       - "5050:80"
+    depends_on:
+      - postgres-dev
     networks:
       - app-net
 

@@ -1,3 +1,0 @@
-FROM nginx:alpine-slim
-
-RUN rm -rf /var/cache/apk/*
