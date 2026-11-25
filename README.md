@@ -1,11 +1,22 @@
+# Laravel Multi-Service Docker Deployment
+
+Production and development deployment setup for a Laravel application with isolated service builds, multi-stage Dockerfiles, cache cleanup, and vulnerability scanning via Trivy.
+
+## Project Structure
 
 ```text
 .
-├── laravel/                # Исходный код приложения
+├── laravel/                  # Laravel application source code
 ├── Deploy/
-│   ├── dev/                # Конфигурации для разработки
-│   └── prod/               # Multi-stage конфигурации для продакшена
-├── docker-compose.dev.yml  # Сервисы для разработки
-├── docker-compose.prod.yml # Сервисы для продакшена
-├── .dockerignore
-└── deploy.sh               # Скрипт автоматического деплоя
+│   ├── dev/                  # Development service Dockerfiles and configs
+│   └── prod/                 # Autonomous production service Dockerfiles and configs
+│       ├── php/
+│       ├── nginx/
+│       ├── postgres/
+│       └── pgadmin/
+├── docker-compose.dev.yml    # Development environment compose file
+├── docker-compose.prod.yml   # Production environment compose file
+├── check-multistage.sh       # Multi-stage build and artifact verification script
+├── deploy.sh                 # Production build, Trivy scan, and service startup script
+├── .dockerignore             # Docker build context exclusions
+└── .gitignore                # Git exclusions
