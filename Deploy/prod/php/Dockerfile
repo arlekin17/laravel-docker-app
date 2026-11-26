@@ -1,4 +1,4 @@
-FROM node:22.21.1-alpine3.23 AS frontend-builder
+FROM node:22-alpine AS frontend-builder
 WORKDIR /app
 RUN apk upgrade --no-cache && rm -rf /var/cache/apk/*
 COPY laravel/package.json laravel/package-lock.json ./
@@ -11,7 +11,7 @@ WORKDIR /app
 COPY laravel/composer.json laravel/composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
-FROM php:8.5.4-fpm-alpine3.23 AS production
+FROM php:8.5.13-fpm-alpine3.24 AS production
 WORKDIR /var/www/html
 
 RUN apk upgrade --no-cache \
